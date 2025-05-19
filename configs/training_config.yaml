@@ -1,0 +1,43 @@
+# train_config.yaml
+
+model:
+  pretrained_model_path: null  # Training from scratch
+  vae_model: ./models/sd14/vae  # Use pretrained VAE
+  text_encoder: ./models/sd14/text_encoder
+  unet_config:
+    sample_size: 64
+    in_channels: 4
+    out_channels: 4
+    layers_per_block: 3
+    block_out_channels: [320, 640, 1280, 1280]
+    down_block_types: ["DownBlock2D", "AttnDownBlock2D", "DownBlock2D", "AttnDownBlock2D"]
+    up_block_types: ["AttnUpBlock2D", "UpBlock2D", "AttnUpBlock2D", "UpBlock2D"]
+    cross_attention_dim: 512
+
+training:
+  resolution: 512
+  train_batch_size: 1
+  gradient_accumulation_steps: 2
+  max_train_steps: 100000
+  checkpointing_steps: 1000
+  validation_steps: 1000
+  output_dir: ./checkpoints
+
+optim:
+  optimizer: AdamW
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  lr_scheduler: constant
+  warmup_steps: 0
+
+compute:
+  mixed_precision: fp16
+  gradient_checkpointing: true
+  enable_xformers_memory_efficient_attention: true
+  max_grad_norm: 1.0
+
+dataset:
+  name: 0xJustin/Dungeons-and-Diffusion  # e.g., "lambdalabs/pokemon-blip-captions"
+  resolution: 512
+  shuffle: true
+  cache_dir: ./data_cache
