@@ -1,11 +1,11 @@
-from diffusers import StableDiffusionPipeline
+from diffusers import StableCascadeCombinedPipeline
 import torch
 
-pipe = StableDiffusionPipeline.from_pretrained(
-    "runwayml/stable-diffusion-v1-5",
+pipe = StableCascadeCombinedPipeline.from_pretrained(
+    "davidavila451/dnd-model-SD",
     torch_dtype=torch.float16
-).to("cuda")
+).to("cpu")
 
-prompt = "a dwarven warrior in golden armor, standing in a misty battlefield"
-image = pipe(prompt).images[0]
-image.save("output/dwarf_warrior.png")
+#prompt = "a dwarven warrior in golden armor, standing in a misty battlefield"
+#image = pipe(prompt).images[0]
+#image.save("output/dwarf_warrior.png")
