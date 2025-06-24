@@ -14,20 +14,18 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 print("Loading models...")
-tokenizer = AutoTokenizer.from_pretrained(PRIOR_MODEL)
-
 prior = StableCascadePriorPipeline.from_pretrained(
-    "stabilityai/stable-cascade-prior", 
+    PRIOR_MODEL, 
     variant="bf16", 
-    torch_dtype=torch.bfloat16 if DEVICE == "cuda" else torch.float32
-).to(DEVICE)
+    torch_dtype=torch.bfloat16
+)
 
 
 decoder = StableCascadeDecoderPipeline.from_pretrained(
-    "stabilityai/stable-cascade", 
+    DECODER_MODEL, 
     variant="bf16", 
-    torch_dtype=torch.bfloat16 if DEVICE == "cuda" else torch.float32
-).to(DEVICE)
+    torch_dtype=torch.bfloat16
+)
 
 
 print("Models loaded and ready.")
@@ -63,5 +61,13 @@ def main():
                 output_type="pil",
                 num_inference_steps=10
             ).images[0]
-            decoder_output.save("{prompt}.png")
 
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"dnd_image_{timestamp}.png"
+        filepath = os.path.join(OUTPUT_DIR, filename)
+        decoder_output.save(filepath)
+
+        print(f"✅ Image saved to: {filepath}")
+
+if __name__ == "__main__":
+    main()
