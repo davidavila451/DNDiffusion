@@ -3,7 +3,7 @@ transformers
 accelerate
 datasets
 huggingface_hub
-numpy
+"numpy<2.0"
 torch
 flask
 flask-cors

@@ -3,6 +3,7 @@ from datetime import datetime
 from diffusers import StableCascadePriorPipeline, StableCascadeDecoderPipeline, StableCascadeUNet
 from transformers import AutoTokenizer
 import torch
+from PIL import Image, ExifTags
 
 # ---------- CONFIGURATION ----------
 PRIOR_MODEL = "stabilityai/stable-cascade-prior"
@@ -72,12 +73,17 @@ def main():
         ).images[0]
 
         print("Saving image")
+        # Gen file name
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"dnd_image_{timestamp}.png"
         filepath = os.path.join(OUTPUT_DIR, filename)
-        decoder_output.save(filepath)
+        # Edit Metadata
+        exif_data = decoder_output.getexif()
+        exif_data[ExifTags.TAGS['ImageDescription']] = prompt
+        # Save image
+        decoder_output.save(filepath, exif=exif_data)
 
-        print(f"✅ Image saved to: {filepath}")
+        print(f"Image saved to: {filepath}")
 
 if __name__ == "__main__":
     main()
