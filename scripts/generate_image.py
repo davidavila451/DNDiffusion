@@ -43,7 +43,7 @@ print("Models loaded and ready.")
 def main():
     while True:
         prompt = input("\nEnter your D&D fantasy prompt (or 'exit' to quit): ").strip()
-        negative_prompt = ""
+        negative_prompt = "low quality"
         if prompt.lower() == "exit":
             print("Goodbye!")
             return
@@ -79,7 +79,7 @@ def main():
         filepath = os.path.join(OUTPUT_DIR, filename)
         # Edit Metadata
         exif_data = decoder_output.getexif()
-        exif_data[ExifTags.TAGS['ImageDescription']] = prompt
+        exif_data[0x010E] = prompt
         # Save image
         decoder_output.save(filepath, exif=exif_data)
 

@@ -2,7 +2,9 @@ diffusers
 transformers
 accelerate
 datasets
+numpy<2.0
 huggingface_hub
 torch
 flask
 flask-cors
+soundfile
