@@ -43,11 +43,10 @@ print("Models loaded and ready.")
 def main():
     while True:
         prompt = input("\nEnter your D&D fantasy prompt (or 'exit' to quit): ").strip()
-        negative_prompt = "low quality"
         if prompt.lower() == "exit":
             print("Goodbye!")
             return
-
+        negative_prompt = input("\nEnter your negative prompts: ").strip()
         print("Generating image from prompt...")
 
         print("Starting prior")
